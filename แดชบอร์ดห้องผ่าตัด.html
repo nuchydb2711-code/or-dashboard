@@ -1,0 +1,579 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>แดชบอร์ดห้องผ่าตัด</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: navy header band, a master month picker, then six separate sections. Every section header carries its own scope selector (whole year or one month). Each department keeps one colour everywhere. */
+:root {
+  --page: #eef3fa;
+  --bg-base: linear-gradient(160deg, #e3effc 0%, #eef0fb 45%, #e8f6f4 100%);
+  --glow-1: rgba(56,132,232,0.22);
+  --glow-2: rgba(130,100,230,0.16);
+  --glow-3: rgba(30,190,150,0.16);
+  --surface: #ffffff;
+  --ink: #0e1b2e;
+  --ink-2: #44546a;
+  --ink-3: #66758a;
+  --grid: #dde5f0;
+  --axis: #c3cedd;
+  --ring: rgba(14,27,46,0.10);
+  --track: #e8eef7;
+  --navy: #1c5cab;
+  --hero-a: #123a73;
+  --hero-b: #1f6fd0;
+  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100;
+  --c5: #e87ba4; --c6: #008300; --c7: #6250d6; --c8: #e34948;
+  --shadow: 0 1px 2px rgba(14,27,46,0.06), 0 6px 18px rgba(14,27,46,0.05);
+  --font: "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0b111b; --bg-base: linear-gradient(160deg, #0a1426 0%, #0d1424 50%, #0a1a1f 100%);
+    --glow-1: rgba(57,135,229,0.20); --glow-2: rgba(144,133,233,0.14); --glow-3: rgba(25,158,112,0.12);
+    --surface: #151d2a; --ink: #eaf0f8; --ink-2: #b4c0d2; --ink-3: #8d9bb0;
+    --grid: #243044; --axis: #33425a; --ring: rgba(255,255,255,0.10); --track: #1f2a3b;
+    --navy: #3987e5; --hero-a: #0f2a52; --hero-b: #164b8c;
+    --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500;
+    --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0b111b; --bg-base: linear-gradient(160deg, #0a1426 0%, #0d1424 50%, #0a1a1f 100%);
+    --glow-1: rgba(57,135,229,0.20); --glow-2: rgba(144,133,233,0.14); --glow-3: rgba(25,158,112,0.12);
+    --surface: #151d2a; --ink: #eaf0f8; --ink-2: #b4c0d2; --ink-3: #8d9bb0;
+  --grid: #243044; --axis: #33425a; --ring: rgba(255,255,255,0.10); --track: #1f2a3b;
+  --navy: #3987e5; --hero-a: #0f2a52; --hero-b: #164b8c;
+  --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500;
+  --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767;
+  --shadow: 0 1px 2px rgba(0,0,0,0.4);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.6;
+  min-height: 100vh;
+  background-color: var(--page);
+  background-image:
+    radial-gradient(900px 520px at 8% -4%, var(--glow-1), transparent 65%),
+    radial-gradient(800px 560px at 100% 18%, var(--glow-2), transparent 62%),
+    radial-gradient(900px 600px at 20% 110%, var(--glow-3), transparent 65%),
+    var(--bg-base);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 22px;
+}
+
+/* header band */
+.hero {
+  background: linear-gradient(120deg, var(--hero-a), var(--hero-b));
+  color: #fff; border-radius: 12px; padding: 26px 28px;
+  display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+.eyebrow { font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; margin: 0 0 4px; }
+h1 { font-size: 1.85rem; line-height: 1.3; margin: 0; font-weight: 700; text-wrap: balance; }
+.sub { margin: 6px 0 0; opacity: 0.88; }
+.stamp { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); border-radius: 8px; padding: 8px 14px; font-size: 0.88rem; line-height: 1.4; }
+.stamp b { display: block; font-size: 1.05rem; font-weight: 600; }
+
+/* master picker */
+.master { background: var(--surface); border-radius: 10px; box-shadow: var(--shadow); padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.master .t { font-weight: 600; }
+.master .d { color: var(--ink-2); font-size: 0.88rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: inherit; font-size: 0.9rem; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--axis); background: transparent; color: var(--ink); cursor: pointer; }
+.chip:hover { background: var(--track); }
+.chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.chip.nodata { color: var(--ink-3); border-style: dashed; }
+.chip[aria-pressed="true"].nodata { color: #fff; border-style: solid; }
+.chip:focus-visible, select:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+/* group dividers: operating stats vs. risk records */
+.group-head { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.group-head .tag { background: var(--gc); color: #fff; border-radius: 999px; padding: 3px 14px; font-size: 0.82rem; font-weight: 600; white-space: nowrap; }
+.group-head h2 { font-size: 1.35rem; font-weight: 700; margin: 0; }
+.group-head .gdesc { color: var(--ink-2); font-size: 0.88rem; margin: 0; flex-basis: 100%; order: 5; }
+.group-head::after { content: ""; flex: 1; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--gc), transparent); order: 4; }
+.group-head { flex-wrap: wrap; }
+.zone-risk { margin-top: 18px; padding: 20px; border-radius: 18px; display: flex; flex-direction: column; gap: 18px;
+  background: color-mix(in srgb, var(--c7) 9%, transparent);
+  border: 1.5px dashed color-mix(in srgb, var(--c7) 45%, transparent); }
+@media (max-width: 560px) { .zone-risk { padding: 12px; } }
+
+/* separate sections */
+.sec { background: var(--surface); border-radius: 10px; box-shadow: var(--shadow); border-top: 5px solid var(--dot, var(--navy)); display: flex; flex-direction: column; min-width: 0; }
+.sec-head { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: flex-start; justify-content: space-between; padding: 18px 20px 14px; border-bottom: 1px solid var(--grid); }
+.sec-head h2 { font-size: 1.2rem; margin: 0; font-weight: 600; }
+.sec-head .hint { color: var(--ink-2); font-size: 0.9rem; margin: 2px 0 0; max-width: 60ch; }
+.scope { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--ink-2); }
+.scope select { font: inherit; font-size: 0.92rem; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--axis); background: var(--surface); color: var(--ink); min-width: 150px; }
+.sec-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.nodata-msg { background: var(--track); color: var(--ink-2); border-radius: 6px; padding: 10px 14px; font-size: 0.92rem; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 22px 32px; }
+.col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.col h3 { font-size: 0.95rem; font-weight: 600; margin: 0; padding-bottom: 6px; border-bottom: 1px solid var(--grid); }
+
+/* KPI tiles */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(176px, 1fr)); gap: 14px; }
+.kpi { background: var(--page); border-radius: 8px; padding: 14px 16px 12px; min-width: 0; border-top: 4px solid var(--k, var(--navy)); }
+.kpi .lab { color: var(--ink-2); font-size: 0.92rem; font-weight: 500; }
+.kpi .num { font-size: 2.2rem; line-height: 1.15; font-weight: 700; margin-top: 2px; }
+.kpi .num small { font-size: 1rem; font-weight: 500; color: var(--ink-2); margin-left: 5px; }
+.kpi .note { color: var(--ink-3); font-size: 0.85rem; margin-top: 2px; }
+
+/* horizontal bars */
+.rows { display: flex; flex-direction: column; gap: 10px; }
+.row { display: grid; grid-template-columns: minmax(104px, 36%) 1fr 84px; gap: 12px; align-items: center; cursor: default; }
+.row .name { font-size: 0.95rem; min-width: 0; overflow-wrap: anywhere; }
+.row .track { height: 16px; background: var(--track); border-radius: 0 6px 6px 0; position: relative; }
+.row .fill { position: absolute; inset: 0 auto 0 0; background: var(--navy); border-radius: 0 6px 6px 0; }
+.row .val { text-align: right; font-size: 0.95rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.row .val i { font-style: normal; font-weight: 400; color: var(--ink-2); font-size: 0.78rem; margin-left: 4px; }
+.row:hover .name, .row:focus-visible .name { text-decoration: underline; text-decoration-color: var(--axis); text-underline-offset: 3px; }
+.row:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 4px; }
+.row.zero .fill { display: none; }
+.row.zero .name, .row.zero .val { color: var(--ink-3); font-weight: 400; }
+
+/* split bar */
+.split { display: flex; height: 40px; gap: 3px; }
+.split .seg { display: flex; align-items: center; padding-inline: 12px; color: #fff; font-weight: 600; font-size: 0.95rem; min-width: 0; white-space: nowrap; overflow: hidden; }
+.split .seg:first-child { border-radius: 6px 0 0 6px; }
+.split .seg:last-child { border-radius: 0 6px 6px 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.9rem; color: var(--ink-2); }
+.legend span::before { content: ""; display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 7px; background: var(--c); vertical-align: -1px; }
+
+/* month strip */
+.months { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 8px; align-items: end; height: 190px; }
+.m { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 4px; cursor: pointer; border-radius: 6px; }
+.m:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.m .v { font-size: 0.9rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.m .bar { width: 100%; max-width: 48px; background: linear-gradient(180deg, var(--c1), var(--hero-a)); border-radius: 6px 6px 0 0; }
+.m.dim .bar { opacity: 0.3; }
+.m.empty .bar { background: transparent; border: 1.5px dashed var(--axis); border-bottom: 0; height: 14px !important; }
+.m.empty .v { color: var(--ink-3); font-weight: 400; }
+.mlabels { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 8px; border-top: 2px solid var(--axis); padding-top: 6px; }
+.mlabels span { text-align: center; font-size: 0.85rem; color: var(--ink-2); }
+.mlabels span.sel { color: var(--navy); font-weight: 700; }
+
+/* month table */
+.tblwrap { overflow-x: auto; border: 1px solid var(--grid); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--grid); }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); }
+thead th { background: var(--track); font-weight: 600; }
+thead th:first-child { background: var(--track); }
+th button { font: inherit; font-weight: 600; background: none; border: 0; color: inherit; cursor: pointer; padding: 0; }
+th button:hover { text-decoration: underline; }
+td.na { color: var(--ink-3); }
+tr.tot td { font-weight: 700; border-bottom: 0; }
+td.selcol, th.selcol { background: color-mix(in srgb, var(--navy) 12%, transparent); }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: 0; }
+
+/* tabs */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tab { font: inherit; font-size: 0.92rem; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--axis); background: transparent; color: var(--ink); cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+.tab:hover { background: var(--track); }
+.tab .tdot { width: 10px; height: 10px; border-radius: 50%; background: var(--d); flex: none; }
+.tab[aria-selected="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
+.tab[aria-selected="true"] .tdot { box-shadow: 0 0 0 2px #fff; }
+.tab:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.tab span.n { font-variant-numeric: tabular-nums; opacity: 0.8; font-size: 0.82rem; }
+.more { align-self: flex-start; font: inherit; font-size: 0.9rem; background: none; border: 0; color: var(--navy); cursor: pointer; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+footer { color: var(--ink-3); font-size: 0.85rem; }
+
+#tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--surface); font-size: 0.85rem; padding: 7px 11px; border-radius: 6px; max-width: 270px; opacity: 0; transition: opacity .08s; }
+@media (max-width: 560px) {
+  .hero { padding: 20px 18px; }
+  h1 { font-size: 1.5rem; }
+  .sec-head, .sec-body { padding-left: 16px; padding-right: 16px; }
+  .row { grid-template-columns: 1fr 72px; }
+  .row .track { grid-column: 1 / -1; grid-row: 2; }
+  .row .name { grid-column: 1; }
+  .row .val { grid-column: 2; grid-row: 1; }
+  .months { height: 150px; gap: 4px; }
+  .mlabels { gap: 4px; }
+  .mlabels span { font-size: 0.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { #tip { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">สรุปผลการดำเนินงานห้องผ่าตัด</p>
+      <h1>แดชบอร์ดห้องผ่าตัด ปีงบประมาณ <span id="fy"></span></h1>
+      <p class="sub">ตุลาคม 2569 ถึง กันยายน 2570</p>
+    </div>
+    <div class="stamp">ข้อมูลล่าสุดในหน้านี้<b id="asof"></b></div>
+  </header>
+
+  <section class="master" aria-label="เลือกเดือนสำหรับทุกส่วน">
+    <div><div class="t">เลือกเดือนสำหรับทุกส่วน</div><div class="d">กดเดือนเพื่อดูทุกส่วนด้านล่างในเดือนนั้นพร้อมกัน หรือตั้งเดือนของแต่ละส่วนแยกกันได้ที่มุมขวาของหัวข้อ เดือนที่เป็นเส้นประคือยังไม่มีข้อมูลในชีต</div></div>
+    <div class="chips" id="masterChips"></div>
+  </section>
+
+  <div class="group-head" style="--gc:var(--navy)">
+    <span class="tag">ส่วนที่ 1</span><h2>สถิติการผ่าตัด</h2>
+    <p class="gdesc">ภาพรวม แผนก เวลา ยอดรายเดือน และรายการผ่าตัด</p>
+  </div>
+
+  <section class="sec" style="--dot:var(--navy)">
+    <div class="sec-head">
+      <div><h2>ภาพรวม</h2><p class="hint">ตัวเลขสำคัญของเดือนหรือปีงบประมาณที่เลือก</p></div>
+      <label class="scope">ขอบเขต <select id="sel-kpi"></select></label>
+    </div>
+    <div class="sec-body"><div class="kpis" id="kpis"></div></div>
+  </section>
+
+  <section class="sec" style="--dot:var(--c1)">
+    <div class="sec-head">
+      <div><h2>ผ่าตัดแยกตามแผนก</h2><p class="hint">จำนวนผ่าตัดของแต่ละแผนก จัดเรียงจากมากไปน้อย</p></div>
+      <label class="scope">ขอบเขต <select id="sel-dept"></select></label>
+    </div>
+    <div class="sec-body"><div id="deptMsg"></div><div class="rows" id="deptRows"></div></div>
+  </section>
+
+  <section class="sec" style="--dot:var(--c2)">
+    <div class="sec-head">
+      <div><h2>เวลาผ่าตัดและประเภทแผล</h2><p class="hint">สัดส่วนในเวลา/นอกเวลา และประเภทแผลผ่าตัด</p></div>
+      <label class="scope">ขอบเขต <select id="sel-time"></select></label>
+    </div>
+    <div class="sec-body">
+      <div id="timeMsg"></div>
+      <div class="cols" id="timeCols">
+        <div class="col"><h3>ในเวลาและนอกเวลา</h3>
+          <div class="split" id="hoursSplit" role="img" aria-label="สัดส่วนในเวลาและนอกเวลา"></div>
+          <div class="legend" id="hoursLegend"></div></div>
+        <div class="col"><h3>ประเภทแผลผ่าตัด</h3><div class="rows" id="woundRows"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="--dot:var(--c3)">
+    <div class="sec-head">
+      <div><h2>ยอดรายเดือน</h2><p class="hint">แสดงครบทุกเดือนเสมอ กดแท่งหรือชื่อเดือนเพื่อดูเดือนนั้นในทุกส่วน เส้นประคือยังไม่มีข้อมูล</p></div>
+    </div>
+    <div class="sec-body">
+      <div class="months" id="months"></div>
+      <div class="mlabels" id="mlabels"></div>
+      <div class="tblwrap"><table id="monthTable"></table></div>
+    </div>
+  </section>
+
+  <section class="sec" style="--dot:var(--c5)">
+    <div class="sec-head">
+      <div><h2>รายการผ่าตัดแยกตามแผนก</h2><p class="hint">เลือกแผนกเพื่อดูหัตถการที่มีจำนวนมากที่สุด</p></div>
+      <label class="scope">ขอบเขต <select id="sel-proc"></select></label>
+    </div>
+    <div class="sec-body">
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="rows" id="procRows" role="tabpanel"></div>
+      <button class="more" id="moreBtn" hidden></button>
+    </div>
+  </section>
+
+  <div class="zone-risk">
+  <div class="group-head" style="--gc:var(--c7)">
+    <span class="tag">ส่วนที่ 2</span><h2>ความเสี่ยง</h2>
+    <p class="gdesc">ข้อมูลบันทึกความเสี่ยงรายเคส แยกจากสถิติการผ่าตัดด้านบน</p>
+  </div>
+
+  <section class="sec" style="--dot:var(--c7)">
+    <div class="sec-head">
+      <div><h2>บันทึกความเสี่ยงรายเคส</h2><p class="hint" id="riskHint"></p></div>
+      <label class="scope">ขอบเขต <select id="sel-risk"></select></label>
+    </div>
+    <div class="sec-body">
+      <div id="riskMsg"></div>
+      <div class="cols" id="riskCols">
+        <div class="col"><h3>ประเภทความเสี่ยงที่บันทึก</h3><div class="rows" id="riskType"></div></div>
+        <div class="col"><h3>เคสที่ผ่าตัดแล้ว แยกตามสาขา</h3><div class="rows" id="riskDept"></div></div>
+        <div class="col"><h3>ความเร่งด่วน</h3><div class="rows" id="riskUrg"></div></div>
+        <div class="col"><h3>ช่วงเวลา</h3><div class="rows" id="riskTime"></div></div>
+        <div class="col"><h3>วิธีให้ยาระงับความรู้สึก</h3><div class="rows" id="riskAnes"></div></div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <footer>ที่มา: ชีตสรุปผ่าตัดประจำเดือน (Google Sheets) ตัวเลขทั้งหมดคำนวณใหม่จากข้อมูลที่ฝังในหน้านี้</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+/* ---- data: every series holds 12 monthly values starting Oct 2569 (null = not yet entered) ---- */
+const MONTHS = ['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];
+const mLabel = i => MONTHS[i] + ' ' + (i < 3 ? 2569 : 2570);
+const M = v => [v, null, null, null, null, null, null, null, null, null, null, null];
+const p = (name, oct) => ({ name, m: M(oct) });
+const DATA = {
+  fy: 2570,
+  asOf: '5 พ.ย. 2569',
+  depts: [
+    { id: 'gen', name: 'ศัลยกรรม', color: 'var(--c1)', procs: [
+      p('EGD',39), p('Colonoscopy',20), p('Appendectomy',18), p('Excision',16), p('Debridement',8), p('Hernioplasty',8),
+      p('LC',6), p('Colonoscopy c polypectomy',5), p('EGD+Colonoscopy',5), p('Lysis tongue tie',5), p('Amputation',4),
+      p('Exploration wound',4), p('I&D',3), p('Exploratory Laparotomy',3), p('EL with Feeding jejunostomy',3),
+      p('CNBx',2), p('Circumcision',2), p('Excision hemorrhoid',2), p('Exploratory sigmoidectomy',2),
+      p('EL c Hemicolectomy',2), p('EL c Simple closure gastric ulcer',2), p('Excision breast mass',1), p('Suture wound',1),
+      p('EGD c polypectomy',1), p('Exploratory Laparotomy c lysis adhesion',1), p('Fasciotomy',1), p('Repair Hernia',1),
+      p('Simple closure duodenum',1), p('Mastectomy',1) ] },
+    { id: 'ortho', name: 'ศัลยกรรมกระดูกและข้อ', color: 'var(--c2)', procs: [
+      p('ORIF with PAS',15), p('Removal of internal fixation device',13), p('Total knee arthroplasty',12),
+      p('DB with repair tendon',5), p('Debridement',4), p('DB open Fx.',4), p('DB with K-wire',4), p('Release carpal tunnel',4),
+      p('Excision',4), p('DB with PAS',3), p('Amputation toe',3), p('Close reduction',3), p('CRIF with K-wire',2),
+      p('Repair tendon',2), p('I&D',2), p('Suture wound',2), p('CRIF with Proximal femoral nailing',1),
+      p('ORIF with Proximal femoral nailing',1), p('ORIF with IM nailing',1), p('Release de Quervain',1),
+      p('Trigger finger',1), p('Arthrotomy',1), p('Remove foreign body',1) ] },
+    { id: 'obg', name: 'สูติ-นรีเวชกรรม', color: 'var(--c5)', procs: [
+      p('LTc/s',20), p('PPTR',2), p('LEEP',2), p('Vaginal myomectomy',1), p('SPTR',1), p('Remove implant',1), p('Suture labia',1) ] },
+    { id: 'eye', name: 'ตา', color: 'var(--c3)', procs: [
+      p('Phaco c IOL',20), p('PEX c Conjunctival graft',2), p('Blepharoplasty',2) ] },
+    { id: 'ent', name: 'หู คอ จมูก', color: 'var(--c4)', procs: [ p('(ยังไม่มีรายการ)', 0) ] },
+    { id: 'ped', name: 'กุมารเวชกรรม', color: 'var(--c7)', procs: [ p('Lysis tongue tie',1) ] },
+    { id: 'mfs', name: 'Maxillofacial', color: 'var(--c6)', procs: [ p('Enucleation at maxilla',1) ] }
+  ],
+  other: {
+    erAdmit: M(20), closedFx: M(18), openFx: M(10),
+    inHours: M(194), outHours: M(116),
+    wound: [M(118), M(156), M(23), M(13)],
+    reopCases: M(35), reopPatients: M(17), allPatients: M(275)
+  },
+  /* risk log: one object per month, tallied from the per-case log sheet; patient identifiers are not kept */
+  risk: [{
+    notOperated: 10,
+    types: [
+      ['เอกสารและการเตรียมก่อนผ่าตัดไม่ครบ', 16], ['ผู้ป่วยไม่พร้อมหรือมีอาการเปลี่ยน', 7],
+      ['อุปกรณ์ เครื่องมือ และสิ่งแวดล้อม OR', 4], ['การเตรียมและระบุตัวผู้ป่วยหน้า OR', 4],
+      ['การประสานงานและแผนผ่าตัดเปลี่ยน', 4]
+    ],
+    dept: [['ศัลยกรรม', 17, 'var(--c1)'], ['ศัลยกรรมกระดูกและข้อ', 7, 'var(--c2)'], ['สูติ-นรีเวชกรรม', 1, 'var(--c5)']],
+    urgency: [['ฉุกเฉิน (Emergency)', 13], ['ตามนัด (Elective)', 12]],
+    time: [['นอกเวลา', 16], ['ในเวลา', 9]],
+    anes: [['SB (Spinal)', 8], ['GA', 7], ['TIVA', 4], ['BB', 3], ['LA', 2], ['MAC', 1]]
+  }, null, null, null, null, null, null, null, null, null, null, null]
+};
+
+/* ---- state: each section has its own scope; -1 = whole year, 0..11 = one month ---- */
+const KEYS = ['kpi', 'dept', 'time', 'risk', 'proc'];
+const scope = { kpi: -1, dept: -1, time: -1, risk: -1, proc: -1 };
+const inS = (key, i) => scope[key] === -1 || scope[key] === i;
+const sum = a => a.reduce((s, v) => s + (v || 0), 0);
+const sumS = (key, a) => a.reduce((s, v, i) => s + (inS(key, i) && v ? v : 0), 0);
+const hasS = (key, a) => a.some((v, i) => inS(key, i) && v != null);
+const fmt = n => n.toLocaleString('th-TH');
+const pct = (n, d) => d ? (n / d * 100).toFixed(1).replace(/\.0$/, '') + '%' : '0%';
+const $ = id => document.getElementById(id);
+const tip = $('tip');
+const scopeName = key => scope[key] === -1 ? 'ทั้งปีงบประมาณ' : mLabel(scope[key]);
+
+const monthHas = MONTHS.map((_, i) => DATA.depts.some(d => d.procs.some(x => x.m[i] != null)));
+const deptMonth = (d, i) => monthHas[i] ? sum(d.procs.map(x => x.m[i])) : null;
+
+function bindTip(el, text) {
+  el.dataset.tip = text;
+  el.addEventListener('mousemove', e => {
+    tip.textContent = el.dataset.tip; tip.style.opacity = 1;
+    const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
+    tip.style.left = Math.max(8, x) + 'px'; tip.style.top = (e.clientY + 16) + 'px';
+  });
+  el.addEventListener('mouseleave', () => { tip.style.opacity = 0; });
+  el.addEventListener('focus', () => {
+    const r = el.getBoundingClientRect(); tip.textContent = el.dataset.tip; tip.style.opacity = 1;
+    tip.style.left = Math.max(8, r.left) + 'px'; tip.style.top = (r.bottom + 6) + 'px';
+  });
+  el.addEventListener('blur', () => { tip.style.opacity = 0; });
+}
+function barRows(container, items, tipFn) {
+  container.innerHTML = '';
+  const max = Math.max(1, ...items.map(i => i.value));
+  items.forEach(it => {
+    const r = document.createElement('div');
+    r.className = 'row' + (it.value === 0 ? ' zero' : ''); r.tabIndex = 0;
+    r.innerHTML = '<div class="name"></div><div class="track"><div class="fill"></div></div><div class="val"></div>';
+    r.querySelector('.name').textContent = it.name;
+    const f = r.querySelector('.fill');
+    f.style.width = (it.value / max * 100) + '%';
+    if (it.color) f.style.background = it.color;
+    r.querySelector('.val').innerHTML = fmt(it.value) + (it.share != null ? '<i>' + it.share + '</i>' : '');
+    bindTip(r, tipFn(it));
+    container.appendChild(r);
+  });
+}
+const msg = (id, text) => { $(id).innerHTML = text ? '<div class="nodata-msg">' + text + '</div>' : ''; };
+
+/* ---- scope controls ---- */
+function setScope(keys, v) {
+  keys.forEach(k => { scope[k] = v; });
+  syncControls(); keys.forEach(k => renderSection(k)); renderMonths();
+}
+function syncControls() {
+  KEYS.forEach(k => { $('sel-' + k).value = String(scope[k]); });
+  const all = KEYS.every(k => scope[k] === scope.kpi) ? scope.kpi : null;
+  [...$('masterChips').children].forEach(b => b.setAttribute('aria-pressed', String(all !== null && Number(b.dataset.v) === all)));
+}
+KEYS.forEach(k => {
+  const s = $('sel-' + k);
+  s.innerHTML = '<option value="-1">ทั้งปีงบประมาณ</option>' + MONTHS.map((_, i) => '<option value="' + i + '">' + mLabel(i) + (monthHas[i] ? '' : ' (ยังไม่มีข้อมูล)') + '</option>').join('');
+  s.onchange = () => { scope[k] = Number(s.value); syncControls(); renderSection(k); };
+});
+$('masterChips').innerHTML = '<button class="chip" data-v="-1">ทั้งปี</button>' +
+  MONTHS.map((_, i) => '<button class="chip' + (monthHas[i] ? '' : ' nodata') + '" data-v="' + i + '">' + mLabel(i) + '</button>').join('');
+[...$('masterChips').children].forEach(b => { b.onclick = () => setScope(KEYS, Number(b.dataset.v)); });
+
+/* ---- risk merge for one section's scope ---- */
+function mergeRisk(key) {
+  const out = { notOperated: 0, types: [], dept: [], urgency: [], time: [], anes: [], any: false };
+  DATA.risk.forEach((r, i) => {
+    if (!r || !inS(key, i)) return;
+    out.any = true; out.notOperated += r.notOperated;
+    ['types', 'dept', 'urgency', 'time', 'anes'].forEach(f => r[f].forEach(row => {
+      const hit = out[f].find(x => x[0] === row[0]);
+      if (hit) hit[1] += row[1]; else out[f].push([...row]);
+    }));
+  });
+  ['types', 'dept', 'urgency', 'time', 'anes'].forEach(f => out[f].sort((a, b) => b[1] - a[1]));
+  return out;
+}
+
+/* ---- sections ---- */
+const deptTotal = (key, d) => sumS(key, d.procs.reduce((acc, x) => acc.map((v, i) => v + (x.m[i] || 0)), Array(12).fill(0)));
+const scopeHasDept = key => monthHas.some((h, i) => h && inS(key, i));
+
+function renderKpis() {
+  const key = 'kpi', O = DATA.other;
+  const grand = DATA.depts.reduce((s, d) => s + deptTotal(key, d), 0);
+  const inH = sumS(key, O.inHours), outH = sumS(key, O.outHours), tot = inH + outH;
+  const R = mergeRisk(key), riskTotal = sum(R.types.map(t => t[1])), operated = riskTotal - R.notOperated;
+  const hasO = hasS(key, O.inHours), hasER = hasS(key, O.erAdmit), hasRe = hasS(key, O.reopCases);
+  const dash = '–';
+  const kp = [
+    { k: 'var(--navy)', lab: 'ผ่าตัดทั้งหมด', num: scopeHasDept(key) ? fmt(grand) : dash, unit: scopeHasDept(key) ? 'ราย' : '', note: scopeName(key) },
+    { k: 'var(--c1)', lab: 'ผ่าตัดในเวลา', num: hasO && tot ? pct(inH, tot) : dash, unit: '', note: hasO ? fmt(inH) + ' ราย จาก ' + fmt(tot) : 'ยังไม่มีข้อมูล' },
+    { k: 'var(--c2)', lab: 'ผ่าตัดนอกเวลา', num: hasO && tot ? pct(outH, tot) : dash, unit: '', note: hasO ? fmt(outH) + ' ราย จาก ' + fmt(tot) : 'ยังไม่มีข้อมูล' },
+    { k: 'var(--c5)', lab: 'รับผู้ป่วยจาก ER', num: hasER ? fmt(sumS(key, O.erAdmit)) : dash, unit: hasER ? 'ราย' : '', note: hasER ? 'กระดูกหักปิด ' + sumS(key, O.closedFx) + ' / เปิด ' + sumS(key, O.openFx) : 'ยังไม่มีข้อมูล' },
+    { k: 'var(--c7)', lab: 'บันทึกความเสี่ยง', num: R.any ? fmt(riskTotal) : dash, unit: R.any ? 'รายการ' : '', note: R.any ? 'ผ่าตัดแล้ว ' + operated + ' · เลื่อนหรือ off case ' + R.notOperated : 'ยังไม่มีข้อมูล' },
+    { k: 'var(--c3)', lab: 'ผ่าตัดซ้ำ', num: hasRe ? fmt(sumS(key, O.reopCases)) : dash, unit: hasRe ? 'ครั้ง' : '',
+      note: hasRe ? fmt(sumS(key, O.reopPatients)) + ' ราย จากผู้ป่วย ' + fmt(sumS(key, O.allPatients)) + ' ราย (' + pct(sumS(key, O.reopPatients), sumS(key, O.allPatients)) + ')' : 'ยังไม่มีข้อมูล' }
+  ];
+  $('kpis').innerHTML = kp.map(k => '<div class="kpi" style="--k:' + k.k + '"><div class="lab">' + k.lab + '</div><div class="num">' + k.num + (k.unit ? '<small>' + k.unit + '</small>' : '') + '</div><div class="note">' + k.note + '</div></div>').join('');
+}
+
+function renderDept() {
+  const key = 'dept';
+  const list = DATA.depts.map(d => ({ ...d, total: deptTotal(key, d) })).sort((a, b) => b.total - a.total);
+  const grand = sum(list.map(d => d.total));
+  msg('deptMsg', scopeHasDept(key) ? '' : scopeName(key) + ' ยังไม่มีข้อมูลในชีต');
+  barRows($('deptRows'), scopeHasDept(key) ? list.map(d => ({ name: d.name, value: d.total, share: pct(d.total, grand), color: d.color })) : [],
+    it => it.name + ': ' + fmt(it.value) + ' ราย (' + it.share + ' ของ' + scopeName(key) + ')');
+}
+
+function renderTime() {
+  const key = 'time', O = DATA.other;
+  const has = hasS(key, O.inHours);
+  msg('timeMsg', has ? '' : scopeName(key) + ' ยังไม่มีข้อมูลเวลาผ่าตัดและประเภทแผลในชีต');
+  $('timeCols').hidden = !has;
+  if (!has) return;
+  const inH = sumS(key, O.inHours), outH = sumS(key, O.outHours), tot = inH + outH;
+  $('hoursSplit').innerHTML = '<div class="seg" style="flex:' + inH + ';background:var(--c1)">ในเวลา ' + pct(inH, tot) + '</div><div class="seg" style="flex:' + outH + ';background:var(--c2)">นอกเวลา ' + pct(outH, tot) + '</div>';
+  const segs = $('hoursSplit').children;
+  bindTip(segs[0], 'ในเวลา: ' + fmt(inH) + ' ราย (' + pct(inH, tot) + ')');
+  bindTip(segs[1], 'นอกเวลา: ' + fmt(outH) + ' ราย (' + pct(outH, tot) + ')');
+  $('hoursLegend').innerHTML = '<span style="--c:var(--c1)">ในเวลา ' + fmt(inH) + ' ราย</span><span style="--c:var(--c2)">นอกเวลา ' + fmt(outH) + ' ราย</span>';
+  const w = O.wound.map(a => sumS(key, a)), wt = sum(w);
+  barRows($('woundRows'), w.map((v, i) => ({ name: 'แผลประเภท ' + (i + 1), value: v, share: pct(v, wt), color: 'var(--c3)' })),
+    it => it.name + ': ' + fmt(it.value) + ' ราย (' + it.share + ')');
+}
+
+function renderMonths() {
+  const totals = MONTHS.map((_, i) => monthHas[i] ? sum(DATA.depts.map(d => deptMonth(d, i))) : null);
+  const mmax = Math.max(1, ...totals.map(v => v || 0));
+  const sel = KEYS.every(k => scope[k] === scope.kpi) ? scope.kpi : -1;
+  $('months').innerHTML = ''; $('mlabels').innerHTML = '';
+  MONTHS.forEach((name, i) => {
+    const v = totals[i];
+    const el = document.createElement('div');
+    el.className = 'm' + (v == null ? ' empty' : '') + (sel !== -1 && sel !== i ? ' dim' : '');
+    el.tabIndex = 0; el.setAttribute('role', 'button'); el.setAttribute('aria-label', mLabel(i));
+    el.innerHTML = '<div class="v">' + (v == null ? '–' : fmt(v)) + '</div><div class="bar"></div>';
+    el.querySelector('.bar').style.height = v == null ? '' : (v / mmax * 100 * 0.82) + '%';
+    bindTip(el, mLabel(i) + (v == null ? ': ยังไม่มีข้อมูล' : ': ' + fmt(v) + ' ราย'));
+    const pick = () => setScope(KEYS, scope.kpi === i && sel === i ? -1 : i);
+    el.onclick = pick; el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } };
+    $('months').appendChild(el);
+    const l = document.createElement('span'); l.textContent = name; if (sel === i) l.className = 'sel';
+    $('mlabels').appendChild(l);
+  });
+  /* table: departments x months */
+  let h = '<thead><tr><th>แผนก</th>' + MONTHS.map((n, i) => '<th class="' + (sel === i ? 'selcol' : '') + '"><button data-m="' + i + '">' + n + '</button></th>').join('') + '<th>รวมปี</th></tr></thead><tbody>';
+  DATA.depts.forEach(d => {
+    h += '<tr><td><span class="dot" style="background:' + d.color + '"></span>' + d.name + '</td>' +
+      MONTHS.map((_, i) => { const v = deptMonth(d, i); return '<td class="' + (v == null ? 'na ' : '') + (sel === i ? 'selcol' : '') + '">' + (v == null ? '–' : fmt(v)) + '</td>'; }).join('') +
+      '<td><b>' + fmt(sum(MONTHS.map((_, i) => deptMonth(d, i)))) + '</b></td></tr>';
+  });
+  h += '<tr class="tot"><td>รวมทุกแผนก</td>' + totals.map((v, i) => '<td class="' + (v == null ? 'na ' : '') + (sel === i ? 'selcol' : '') + '">' + (v == null ? '–' : fmt(v)) + '</td>').join('') + '<td>' + fmt(sum(totals)) + '</td></tr></tbody>';
+  $('monthTable').innerHTML = h;
+  $('monthTable').querySelectorAll('th button').forEach(b => { b.onclick = () => setScope(KEYS, Number(b.dataset.m)); });
+}
+
+function renderRisk() {
+  const key = 'risk', R = mergeRisk(key);
+  const riskTotal = sum(R.types.map(t => t[1])), operated = riskTotal - R.notOperated;
+  $('riskHint').textContent = R.any
+    ? 'บันทึกความเสี่ยง ' + riskTotal + ' รายการ เป็นเคสที่ผ่าตัดแล้ว ' + operated + ' และเลื่อนหรือ off case ' + R.notOperated + ' (จัดกลุ่มจากข้อความในชีต ไม่แสดงข้อมูลผู้ป่วย)'
+    : 'จัดกลุ่มจากข้อความในชีตรายเคส ไม่แสดงข้อมูลผู้ป่วย';
+  msg('riskMsg', R.any ? '' : scopeName(key) + ' ยังไม่มีบันทึกความเสี่ยงในชีต');
+  $('riskCols').hidden = !R.any;
+  if (!R.any) return;
+  const bars = (id, rows, base, label, colors) => barRows($(id),
+    rows.map((r, i) => ({ name: r[0], value: r[1], share: pct(r[1], base), color: r[2] || colors[i % colors.length] })),
+    it => it.name + ': ' + fmt(it.value) + ' (' + it.share + ' ของ' + label + ')');
+  bars('riskType', R.types, riskTotal, 'บันทึกทั้งหมด', ['var(--c7)']);
+  bars('riskDept', R.dept, operated, 'เคสที่ผ่าตัดแล้ว', []);
+  bars('riskUrg', R.urgency, operated, 'เคสที่ผ่าตัดแล้ว', ['var(--c8)', 'var(--c1)']);
+  bars('riskTime', R.time, operated, 'เคสที่ผ่าตัดแล้ว', ['var(--c2)', 'var(--c1)']);
+  bars('riskAnes', R.anes, operated, 'เคสที่ผ่าตัดแล้ว', ['var(--c3)']);
+}
+
+let current = 'gen', expanded = false;
+const LIMIT = 12;
+function renderProcs() {
+  const key = 'proc';
+  const dl = DATA.depts.map(d => ({ ...d, total: deptTotal(key, d) })).sort((a, b) => b.total - a.total);
+  $('tabs').innerHTML = '';
+  dl.forEach(d => {
+    const b = document.createElement('button');
+    b.className = 'tab'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', d.id === current);
+    b.innerHTML = '<i class="tdot" style="--d:' + d.color + '"></i>' + d.name + ' <span class="n">' + (scopeHasDept(key) ? fmt(d.total) : '–') + '</span>';
+    b.onclick = () => { current = d.id; expanded = false; renderProcs(); };
+    $('tabs').appendChild(b);
+  });
+  const d = dl.find(x => x.id === current);
+  const list = d.procs.map(x => ({ name: x.name, value: sumS(key, x.m) })).filter(x => x.value > 0).sort((a, b) => b.value - a.value);
+  const shown = expanded ? list : list.slice(0, LIMIT);
+  barRows($('procRows'), shown.map(x => ({ ...x, share: pct(x.value, d.total), color: d.color })),
+    it => it.name + ': ' + fmt(it.value) + ' ราย (' + it.share + ' ของ' + d.name + ')');
+  if (!list.length) $('procRows').innerHTML = '<div class="nodata-msg">' + (scopeHasDept(key) ? d.name + ' ไม่มีรายการผ่าตัดใน' : '') + (scopeHasDept(key) ? scopeName(key) : scopeName(key) + ' ยังไม่มีข้อมูลในชีต') + '</div>';
+  $('moreBtn').hidden = list.length <= LIMIT;
+  $('moreBtn').textContent = expanded ? 'แสดงเฉพาะ ' + LIMIT + ' รายการแรก' : 'แสดงทั้งหมด ' + list.length + ' รายการ';
+}
+$('moreBtn').onclick = () => { expanded = !expanded; renderProcs(); };
+
+function renderSection(k) { ({ kpi: renderKpis, dept: renderDept, time: renderTime, risk: renderRisk, proc: renderProcs })[k](); }
+
+$('fy').textContent = DATA.fy;
+$('asof').textContent = DATA.asOf;
+syncControls();
+KEYS.forEach(renderSection);
+renderMonths();
+</script>
+
+</body></html>
